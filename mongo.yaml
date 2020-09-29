@@ -44,6 +44,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongo-data-pvc
+  namespace: growi
 spec:
   storageClassName: manual
   accessModes:
