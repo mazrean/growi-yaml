@@ -45,7 +45,6 @@ spec:
   selector:
     matchLabels:
       role: elasticsearch
-  serviceName: "growi-elasticsearch"
   template:
     metadata:
       labels:

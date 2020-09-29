@@ -62,7 +62,6 @@ spec:
   selector:
     matchLabels:
       role: db
-  serviceName: "mongodb"
   template:
     metadata:
       namespace: growi
@@ -84,23 +83,6 @@ spec:
       - name: datadir
         persistentVolumeClaim:
           claimName: mongo-data-pvc
-  volumeClaimTemplates:
-  - metadata:
-      name: configdatadir
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Mi
-  - metadata:
-      name: datadir
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Mi
 ---
 apiVersion: v1
 kind: Service
