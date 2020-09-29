@@ -6,12 +6,37 @@ metadata:
   namespace: growi
 data:
   memlock: "true"
-  javaopt: "-Xms256m -Xmx256m"
+  javaopt: "-Xms128m -Xmx128m"
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: elasticsearch-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Mi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /var/elasticsearch/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Mi
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: elasticsearch
+  name: growi-elasticsearch
   namespace: growi
 spec:
   replicas: 1
@@ -36,27 +61,22 @@ spec:
           value: memlock
         - name: ES_JAVA_OPTS
           value: javaopt
-  volumeClaimTemplates:
-  - metadata:
-      name: datadir
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Mi
+      volumes:
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: elasticsearch-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: elasticsearch
+  name: growi-elasticsearch
   namespace: growi
 spec:
   type: LoadBalancer
   ports:
     - name: "elasticsearch-port"
       protocol: "TCP"
-      port: 9200
+      port: 39200
       targetPort: 9200
   selector:
     role: elasticsearch

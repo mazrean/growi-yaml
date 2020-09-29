@@ -1,8 +1,58 @@
 ---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo-config-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Mi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /var/mongo/configdata
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-config-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Mi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo-data-pv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Mi
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /var/mongo/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-data-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Mi
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongodb
+  name: growi-mongodb
   namespace: growi
 spec:
   replicas: 1
@@ -24,6 +74,13 @@ spec:
           mountPath: /data/configdb
         - name: datadir
           mountPath: /data/db
+      volumes:
+      - name: configdatadir
+        persistentVolumeClaim:
+          claimName: mongo-config-pvc
+      - name: datadir
+        persistentVolumeClaim:
+          claimName: mongo-data-pvc
   volumeClaimTemplates:
   - metadata:
       name: configdatadir
@@ -45,7 +102,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb
+  name: growi-mongodb
   namespace: growi
 spec:
   type: ClusterIP
