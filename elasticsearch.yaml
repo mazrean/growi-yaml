@@ -59,10 +59,10 @@ spec:
         image: mazrean/elasticsearch:latest
         imagePullPolicy: Always
         resources:
-        limits:
-          memory: "256Mi"
-        requests:
-          memory: "256Mi"
+          limits:
+            memory: "256Mi"
+          requests:
+            memory: "256Mi"
         volumeMounts:
         - name: datadir
           mountPath: /usr/share/elasticsearch/data
