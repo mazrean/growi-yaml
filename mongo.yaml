@@ -32,7 +32,7 @@ spec:
       - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: 1Mi
   - metadata:
       name: datadir
     spec:
@@ -40,7 +40,7 @@ spec:
       - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: 1Mi
 ---
 apiVersion: v1
 kind: Service
