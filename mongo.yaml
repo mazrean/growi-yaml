@@ -5,7 +5,7 @@ metadata:
   name: mongo-config-pv
   namespace: growi
 spec:
-  storageClassName: manual
+  storageClassName: slow
   capacity:
     storage: 1Mi
   accessModes:
@@ -19,7 +19,7 @@ metadata:
   name: mongo-config-pvc
   namespace: growi
 spec:
-  storageClassName: manual
+  storageClassName: slow
   accessModes:
   - ReadWriteOnce
   resources:
@@ -32,7 +32,7 @@ metadata:
   name: mongo-data-pv
   namespace: growi
 spec:
-  storageClassName: manual
+  storageClassName: slow
   capacity:
     storage: 1Mi
   accessModes:
@@ -46,7 +46,7 @@ metadata:
   name: mongo-data-pvc
   namespace: growi
 spec:
-  storageClassName: manual
+  storageClassName: slow
   accessModes:
   - ReadWriteOnce
   resources:

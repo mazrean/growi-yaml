@@ -14,7 +14,7 @@ metadata:
   name: elasticsearch-pv
   namespace: growi
 spec:
-  storageClassName: manual
+  storageClassName: slow
   capacity:
     storage: 1Mi
   accessModes:
@@ -28,7 +28,7 @@ metadata:
   name: elasticsearch-pvc
   namespace: growi
 spec:
-  storageClassName: manual
+  storageClassName: slow
   accessModes:
   - ReadWriteOnce
   resources:
