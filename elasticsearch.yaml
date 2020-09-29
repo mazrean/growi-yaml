@@ -60,9 +60,15 @@ spec:
           mountPath: /usr/share/elasticsearch/data
         env:
         - name: bootstrap.memory_lock
-          value: memlock
+          valueFrom:
+            configMapKeyRef:
+              name: elasticsearch
+              key: memlock
         - name: ES_JAVA_OPTS
-          value: javaopt
+          valueFrom:
+            configMapKeyRef:
+              name: elasticsearch
+              key: javaopt
       volumes:
       - name: datadir
         persistentVolumeClaim:
