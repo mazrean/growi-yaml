@@ -54,7 +54,7 @@ spec:
       storage: 1Mi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: growi-mongodb
   namespace: growi
@@ -63,6 +63,7 @@ spec:
   selector:
     matchLabels:
       role: db
+  serviceName: "mongodb"
   template:
     metadata:
       namespace: growi
