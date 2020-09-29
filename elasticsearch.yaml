@@ -6,7 +6,7 @@ metadata:
   namespace: growi
 data:
   memlock: "true"
-  javaopt: "-Xms128m -Xmx128m"
+  javaopt: "-Xms256m -Xmx256m"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -58,6 +58,11 @@ spec:
       - name: app-container
         image: mazrean/elasticsearch:latest
         imagePullPolicy: Always
+        resources:
+        limits:
+          memory: "256Mi"
+        requests:
+          memory: "256Mi"
         volumeMounts:
         - name: datadir
           mountPath: /usr/share/elasticsearch/data
