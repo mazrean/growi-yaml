@@ -1,0 +1,62 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch
+  namespace: growi
+data:
+  memlock: "true"
+  javaopt: "-Xms256m -Xmx256m"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: growi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: elasticsearch
+  serviceName: "elasticsearch"
+  template:
+    metadata:
+      labels:
+        role: elasticsearch
+    spec:
+      containers:
+      - name: app-container
+        image: mazrean/elasticsearch:latest
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: datadir
+          mountPath: /usr/share/elasticsearch/data
+        env:
+        - name: bootstrap.memory_lock
+          value: memlock
+        - name: ES_JAVA_OPTS
+          value: javaopt
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: growi
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 9200
+      targetPort: 9200
+  selector:
+    role: elasticsearch

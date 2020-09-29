@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: growi-app
+  namespace: growi
+data:
+  fileupload: "mongodb"
+  wikimode: "private"
+  pwseed: "liuc1ookio3jauraek4f"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: growi-app
+  namespace: growi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: app
+  template:
+    metadata:
+      namespace: growi
+      labels:
+        role: app
+    spec:
+      containers:
+      - name: app-container
+        image: mazrean/growi:latest
+        imagePullPolicy: Always
+        env:
+        - name: DMONGO_URI
+          value: mongodb.default.svc.cluster.local
+        - name: ELASTICSEARCH_URI
+          value: elasticsearch.default.svc.cluster.local
+        - name: PASSWORD_SEED
+          valueFrom:
+            configMapKeyRef:
+              name: growi-app
+              key: pwseed
+        - name:  FILE_UPLOAD
+          valueFrom:
+            configMapKeyRef:
+              name: growi-app
+              key: fileupload
+        - name: FORCE_WIKI_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: growi-app
+              key: wikimode
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: growi-app
+  namespace: growi
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "http-port"
+      protocol: "TCP"
+      port: 3000
+      targetPort: 3000
+  selector:
+    role: app

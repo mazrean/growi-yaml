@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: growi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: db
+  serviceName: "mongodb"
+  template:
+    metadata:
+      namespace: growi
+      labels:
+        role: db
+    spec:
+      containers:
+      - name: mongodb-container
+        image: mongo:3.6
+        volumeMounts:
+        - name: configdatadir
+          mountPath: /data/configdb
+        - name: datadir
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: configdatadir
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: growi
+spec:
+  type: ClusterIP
+  ports:
+    - name: "mongodb-port"
+      protocol: "TCP"
+      port: 3306
+      targetPort: 3306
+  selector:
+    role: db
