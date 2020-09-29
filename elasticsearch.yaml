@@ -54,7 +54,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - name: "http-port"
+    - name: "elasticsearch-port"
       protocol: "TCP"
       port: 9200
       targetPort: 9200
