@@ -1,4 +1,17 @@
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongo-config-pvc
+  namespace: growi
+spec:
+  storageClassName: slow
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Mi
+---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -10,13 +23,16 @@ spec:
     storage: 1Mi
   accessModes:
   - ReadWriteOnce
+  claimRef:
+    namespace: growi
+    name: mongo-config-pvc
   hostPath:
     path: /var/mongo/configdata
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mongo-config-pvc
+  name: mongo-data-pvc
   namespace: growi
 spec:
   storageClassName: slow
@@ -37,21 +53,11 @@ spec:
     storage: 1Mi
   accessModes:
   - ReadWriteOnce
+  claimRef:
+    namespace: growi
+    name: mongo-data-pvc
   hostPath:
     path: /var/mongo/data
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongo-data-pvc
-  namespace: growi
-spec:
-  storageClassName: slow
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Mi
 ---
 apiVersion: apps/v1
 kind: StatefulSet

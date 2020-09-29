@@ -8,20 +8,6 @@ data:
   memlock: "true"
   javaopt: "-Xms128m -Xmx128m"
 ---
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: elasticsearch-pv
-  namespace: growi
-spec:
-  storageClassName: slow
-  capacity:
-    storage: 1Mi
-  accessModes:
-  - ReadWriteOnce
-  hostPath:
-    path: /var/elasticsearch/data
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -34,6 +20,23 @@ spec:
   resources:
     requests:
       storage: 1Mi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: elasticsearch-pv
+  namespace: growi
+spec:
+  storageClassName: slow
+  capacity:
+    storage: 1Mi
+  accessModes:
+  - ReadWriteOnce
+  claimRef:
+    namespace: growi
+    name: elasticsearch-pvc
+  hostPath:
+    path: /var/elasticsearch/data
 ---
 apiVersion: apps/v1
 kind: StatefulSet
