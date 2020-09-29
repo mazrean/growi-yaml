@@ -3,6 +3,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: mongo-config-pv
+  namespace: growi
 spec:
   storageClassName: manual
   capacity:
@@ -16,6 +17,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mongo-config-pvc
+  namespace: growi
 spec:
   storageClassName: manual
   accessModes:
@@ -28,6 +30,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: mongo-data-pv
+  namespace: growi
 spec:
   storageClassName: manual
   capacity:
@@ -50,7 +53,7 @@ spec:
       storage: 1Mi
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: growi-mongodb
   namespace: growi
