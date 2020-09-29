@@ -76,7 +76,7 @@ spec:
   ports:
     - name: "elasticsearch-port"
       protocol: "TCP"
-      port: 39200
-      targetPort: 9200
+      port: 9200
+      targetPort: 39200
   selector:
     role: elasticsearch
