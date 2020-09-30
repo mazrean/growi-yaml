@@ -58,6 +58,8 @@ spec:
       - name: app-container
         image: mazrean/elasticsearch:latest
         imagePullPolicy: Always
+        ports:
+        - containerPort: 9200
         resources:
           limits:
             memory: "512Mi"
@@ -88,11 +90,11 @@ metadata:
   name: growi-elasticsearch
   namespace: growi
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: "elasticsearch-port"
       protocol: "TCP"
       port: 9200
-      targetPort: 39200
+      targetPort: 9200
   selector:
     role: elasticsearch

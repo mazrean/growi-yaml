@@ -29,6 +29,8 @@ spec:
       - name: app-container
         image: mazrean/growi:latest
         imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
         env:
         - name: DMONGO_URI
           value: mongodb.default.svc.cluster.local
