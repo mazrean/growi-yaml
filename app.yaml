@@ -33,7 +33,7 @@ spec:
         - containerPort: 3000
         env:
         - name: DMONGO_URI
-          value: mongodb.default.svc.cluster.local
+          value: growi-mongodb.default.svc.cluster.local
         - name: ELASTICSEARCH_URI
           value: elasticsearch.default.svc.cluster.local
         - name: PASSWORD_SEED
